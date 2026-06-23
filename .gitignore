@@ -1,0 +1,20 @@
+# Dependencias de Node (Ionic)
+**/node_modules/
+**/.sourcemaps/
+**/www/
+**/dist/
+
+# Archivos de compilación de Flutter y Xcode
+**/build/
+**/.dart_tool/
+**/.pub-cache/
+**/.pub/
+**/.symlinks/
+**/.ios/
+**/.android/
+**/ios/Flutter/.ios/
+
+# Archivos del sistema y cachés de Mac
+.DS_Store
+**/.DS_Store
+Thumbs.db

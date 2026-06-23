@@ -1,0 +1,162 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      <ion-icon name="location-outline" style="vertical-align: middle; margin-right: 6px;"></ion-icon>
+      GPS Tracker
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+
+  <!-- ── Hero section ───────────────────────────────────────────── -->
+  <div class="hero">
+    <div class="hero__icon-wrapper" [class.hero__icon-wrapper--pulse]="isLoading">
+      <ion-icon name="locate" class="hero__icon"></ion-icon>
+    </div>
+    <h1 class="hero__title">Mi Ubicación GPS</h1>
+    <p class="hero__subtitle">Precisión hasta 3 metros con GPS de alta exactitud</p>
+  </div>
+
+  <!-- ── Botón principal ────────────────────────────────────────── -->
+  <div class="action-area">
+    <ion-button
+      id="btn-obtener-ubicacion"
+      expand="block"
+      size="large"
+      class="gps-btn"
+      [disabled]="isLoading"
+      (click)="obtenerUbicacion()"
+    >
+      <ion-spinner *ngIf="isLoading" name="crescent" slot="start"></ion-spinner>
+      <ion-icon *ngIf="!isLoading" name="locate" slot="start"></ion-icon>
+      {{ isLoading ? 'Obteniendo ubicación…' : 'Obtener mi ubicación' }}
+    </ion-button>
+  </div>
+
+  <!-- ── Estado: Cargando ───────────────────────────────────────── -->
+  <div *ngIf="isLoading" class="status-card status-card--loading">
+    <ion-spinner name="dots" color="primary"></ion-spinner>
+    <p>Conectando con los satélites GPS…</p>
+    <small>Esto puede tardar hasta 15 segundos en exteriores</small>
+  </div>
+
+  <!-- ── Estado: Éxito ──────────────────────────────────────────── -->
+  <ion-card *ngIf="isSuccess && gpsResult()" class="result-card">
+    <ion-card-header>
+      <div class="result-card__header">
+        <ion-icon name="checkmark-circle-outline" color="success" class="result-card__status-icon"></ion-icon>
+        <ion-card-title>Ubicación encontrada</ion-card-title>
+        <ion-chip color="success" class="result-card__chip">
+          <ion-label>{{ formatTimestamp(gpsResult()!.timestamp) }}</ion-label>
+        </ion-chip>
+      </div>
+    </ion-card-header>
+
+    <ion-card-content>
+      <ion-list lines="full" class="coords-list">
+        <!-- Latitud -->
+        <ion-item>
+          <ion-label>
+            <p class="coords-list__label">Latitud</p>
+            <h2 class="coords-list__value">{{ formatCoord(gpsResult()!.latitude) }}°</h2>
+          </ion-label>
+        </ion-item>
+
+        <!-- Longitud -->
+        <ion-item>
+          <ion-label>
+            <p class="coords-list__label">Longitud</p>
+            <h2 class="coords-list__value">{{ formatCoord(gpsResult()!.longitude) }}°</h2>
+          </ion-label>
+        </ion-item>
+
+        <!-- Precisión -->
+        <ion-item>
+          <ion-label>
+            <p class="coords-list__label">Precisión horizontal</p>
+            <h2 class="coords-list__value">
+              {{ gpsResult()!.accuracy }} m
+              <ion-chip
+                [color]="gpsResult()!.accuracy <= 10 ? 'success' : gpsResult()!.accuracy <= 50 ? 'warning' : 'danger'"
+                class="accuracy-chip"
+              >
+                <ion-label>
+                  {{ gpsResult()!.accuracy <= 10 ? 'Alta' : gpsResult()!.accuracy <= 50 ? 'Media' : 'Baja' }}
+                </ion-label>
+              </ion-chip>
+            </h2>
+          </ion-label>
+        </ion-item>
+
+        <!-- Altitud (si disponible) -->
+        <ion-item *ngIf="gpsResult()!.altitude !== null">
+          <ion-label>
+            <p class="coords-list__label">Altitud</p>
+            <h2 class="coords-list__value">{{ gpsResult()!.altitude }} msnm</h2>
+          </ion-label>
+        </ion-item>
+
+        <!-- Velocidad (si disponible) -->
+        <ion-item *ngIf="gpsResult()!.speed !== null">
+          <ion-label>
+            <p class="coords-list__label">Velocidad</p>
+            <h2 class="coords-list__value">{{ gpsResult()!.speed }} km/h</h2>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+
+      <!-- Botones de acción post-resultado -->
+      <div class="result-actions">
+        <ion-button
+          id="btn-abrir-mapa"
+          fill="outline"
+          expand="block"
+          (click)="openInMaps()"
+        >
+          <ion-icon name="location-outline" slot="start"></ion-icon>
+          Ver en Google Maps
+        </ion-button>
+        <ion-button
+          id="btn-reintentar-exito"
+          fill="clear"
+          expand="block"
+          color="medium"
+          (click)="reintentar()"
+        >
+          <ion-icon name="refresh-outline" slot="start"></ion-icon>
+          Actualizar ubicación
+        </ion-button>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- ── Estado: Error ──────────────────────────────────────────── -->
+  <ion-card *ngIf="isError && gpsError()" class="error-card">
+    <ion-card-header>
+      <div class="error-card__header">
+        <ion-icon name="alert-circle-outline" color="danger" class="error-card__status-icon"></ion-icon>
+        <ion-card-title color="danger">Error al obtener GPS</ion-card-title>
+      </div>
+    </ion-card-header>
+    <ion-card-content>
+      <p class="error-card__message">{{ gpsError()!.message }}</p>
+
+      <div class="error-card__suggestion">
+        <strong>💡 Qué puedes hacer:</strong>
+        <p>{{ gpsError()!.suggestion }}</p>
+      </div>
+
+      <ion-button
+        id="btn-reintentar-error"
+        expand="block"
+        color="warning"
+        (click)="reintentar()"
+      >
+        <ion-icon name="refresh-outline" slot="start"></ion-icon>
+        Reintentar
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
+
+</ion-content>
