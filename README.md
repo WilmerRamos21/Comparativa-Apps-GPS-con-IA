@@ -110,6 +110,6 @@ npx cap open ios # Ejecutar desde Xcode
 ```
 
 ## Conclusiones
-Para finalizar, me quedo claro que el uso de la IA como un asistente de desarrollo de programas o aplicaciones, se ve notablemente acelerado en varios aspectos, uno de ellos es en el desarrollo de la lo2gica necesario y manejo de los errores y otro de ellos es en el diseño que tendrá el programa final.
+Para finalizar, me quedo claro que el uso de la IA como un asistente de desarrollo de programas o aplicaciones, se ve notablemente acelerado en varios aspectos, uno de ellos es en el desarrollo de la lógica necesario y manejo de los errores y otro de ellos es en el diseño que tendrá el programa final.
 A mi parecer la herramienta de Antigravity me resulto más eficaz en lo que sería el diseño de estilos y lógica, ya que me presento una aplicación con estilos mucho mejores que los de codex utilizando el mismo prompt en ambas, codex se enfocó mucho más en la lógica que en el diseño de la interfaz y antigravity hizo las dos cosas, también cabe recalcar que el razonamiento utilizado para el desarrollo de estas apps en codex se vio limitado ya que presentaba solo 3 niveles de pensamiento mientras que antigravity poseía alrededor de 10 niveles de pensamiento, inlcuyendo diferentes modelos de IA, lo que es Gemini Flash, Gemini Pro y Claude Sonnet que fue la cual use para el desarrollo de este software de aplicaciones móviles.
 
