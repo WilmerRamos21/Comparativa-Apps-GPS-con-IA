@@ -10,7 +10,7 @@
 > **Estudiante:** Wilmer Ramos
 
 ### 🎥 Demostración Práctica
-[👉 **MIRA EL VIDEO DEMOSTRATIVO (TIKTOK/REELS) AQUÍ** 👈]([Pega_aqui_el_link_de_tu_video])
+https://youtu.be/p-trhPa1rBs
 
 ---
 
